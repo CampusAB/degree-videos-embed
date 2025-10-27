@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Degree Videos Embed</title>
+<style>
+  :root{
+    --card-radius: 18px;
+    --shadow: 0 10px 25px rgba(0,0,0,.15);
+    --overlay-shadow: 0 6px 18px rgba(0,0,0,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background:#fff;
+    color:#111;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:20px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  @media (max-width: 800px){
+    .grid{ grid-template-columns:1fr; }
+  }
+  .card{
+    position:relative;
+    border-radius: 14px;
+    overflow:hidden;
+    box-shadow: var(--shadow);
+    background:#000;
+    isolation:isolate;
+  }
+  .card video, .card .poster{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    aspect-ratio: 9/16; /* tall video look like the screenshot */
+  }
+  .caption{
+    position:absolute;
+    left:12px; right:12px; bottom:12px;
+    background:#fff;
+    border:1px solid rgba(0,0,0,.12);
+    border-radius: 10px;
+    padding:14px 16px;
+    box-shadow: var(--overlay-shadow);
+  }
+  .title{
+    font-weight:800;
+    font-size: 1.1rem;
+    text-align:center;
+    margin:0 0 6px 0;
+  }
+  .subtitle{
+    font-size: .98rem;
+    line-height:1.25;
+    text-align:center;
+    margin:0;
+  }
+  .play-indicator{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+    opacity:.0;
+    transition: opacity .22s ease;
+  }
+  .card.paused .play-indicator{ opacity:1; }
+  .play-icon{
+    width:72px; height:72px;
+    background: rgba(255,255,255,.92);
+    border-radius:50%;
+    box-shadow: var(--overlay-shadow);
+    display:grid; place-items:center;
+  }
+  .play-icon svg{
+    width:34px; height:34px; fill:#111;
+    margin-left:3px;
+  }
+  .hotspot{
+    position:absolute; inset:0;
+    cursor:pointer;
+    background:linear-gradient(180deg, rgba(0,0,0,.0) 60%, rgba(0,0,0,.12) 100%);
+  }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="grid">
+
+      <!-- Card 1: AA in BA -->
+      <div class="card paused" data-title="A.A. in BA">
+        <video
+          src="Heading (2).mp4"
+          muted
+          playsinline
+          autoplay
+          loop
+          preload="auto"
+          aria-label="A.A. in Business Administration program video">
+        </video>
+        <div class="hotspot" aria-hidden="true"></div>
+        <div class="play-indicator" aria-hidden="true">
+          <div class="play-icon" role="img" aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5v14l11-7z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="caption" role="group" aria-label="Degree information">
+          <p class="title">A.A. in BA</p>
+          <p class="subtitle">Associate of Arts in Business Administration</p>
+        </div>
+      </div>
+
+      <!-- Card 2: AS in IT -->
+      <div class="card paused" data-title="A.S. in IT">
+        <video
+          src="Heading (3).mp4"
+          muted
+          playsinline
+          autoplay
+          loop
+          preload="auto"
+          aria-label="A.S. in Information Technology program video">
+        </video>
+        <div class="hotspot" aria-hidden="true"></div>
+        <div class="play-indicator" aria-hidden="true">
+          <div class="play-icon" role="img" aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5v14l11-7z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="caption" role="group" aria-label="Degree information">
+          <p class="title">A.S. in IT</p>
+          <p class="subtitle">Associate of Science in Information Technology</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // Toggle pause/play on click and show an indicator when paused.
+  document.querySelectorAll('.card').forEach(function(card){
+    const video = card.querySelector('video');
+    const hotspot = card.querySelector('.hotspot');
+
+    // Ensure autoplay starts (browsers may delay until ready)
+    const ensurePlay = () => {
+      video.play().then(() => {
+        card.classList.remove('paused');
+      }).catch(() => {
+        // If autoplay is blocked for some reason, show indicator until user clicks
+        card.classList.add('paused');
+      });
+    };
+
+    if (video.readyState >= 2) ensurePlay();
+    else video.addEventListener('canplay', ensurePlay, { once:true });
+
+    hotspot.addEventListener('click', () => {
+      if (video.paused){
+        video.play();
+        card.classList.remove('paused');
+      }else{
+        video.pause();
+        card.classList.add('paused');
+      }
+    });
+  });
+</script>
+</body>
+</html>
