@@ -38,12 +38,12 @@
     background:#000;
     isolation:isolate;
   }
-  .card video, .card .poster{
+  .card video{
     display:block;
     width:100%;
     height:100%;
     object-fit:cover;
-    aspect-ratio: 9/16; /* tall video look like the screenshot */
+    aspect-ratio: 9/16; /* tall video look similar to your screenshot */
   }
   .caption{
     position:absolute;
@@ -105,7 +105,7 @@
       <!-- Card 1: AA in BA -->
       <div class="card paused" data-title="A.A. in BA">
         <video
-          src="Heading (2).mp4"
+          src="heading-2.mp4"
           muted
           playsinline
           autoplay
@@ -130,7 +130,7 @@
       <!-- Card 2: AS in IT -->
       <div class="card paused" data-title="A.S. in IT">
         <video
-          src="Heading (3).mp4"
+          src="heading-3.mp4"
           muted
           playsinline
           autoplay
@@ -156,17 +156,17 @@
   </div>
 
 <script>
-  // Toggle pause/play on click and show an indicator when paused.
+  // Toggle pause and play with a simple click anywhere on the card
   document.querySelectorAll('.card').forEach(function(card){
     const video = card.querySelector('video');
     const hotspot = card.querySelector('.hotspot');
 
-    // Ensure autoplay starts (browsers may delay until ready)
+    // Try to start autoplay as soon as the video can play
     const ensurePlay = () => {
       video.play().then(() => {
         card.classList.remove('paused');
       }).catch(() => {
-        // If autoplay is blocked for some reason, show indicator until user clicks
+        // If a browser blocks autoplay, show the play indicator until the user clicks
         card.classList.add('paused');
       });
     };
